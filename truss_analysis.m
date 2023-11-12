@@ -1,78 +1,32 @@
 load('PracticeProblemInput.mat'); 
-[Cr, Cc] = size(C);
-coeMat = zeros(Cr, Cc);
 
-for i = 1:Cr
-    memberMatches = find(C(i,:) == 1);
-
-    for j = 1:length(memberMatches)
-        jointMatches(j,:) = find(C(:,memberMatches(j)) == 1);
+[C_rows, C_cols] = size(C);
+Ax = zeros(C_rows, C_cols);
+Ay = zeros(C_rows, C_cols);
+%Loop for Ax matrix
+for i = 1:C_rows
+    members = find(C(i,:)); %columns of C
+    for j = 1:numel(members)
+        joints = find(C(:, members(j))); %rows of C
+        joints = joints';
+        x1 = X(joints(1)); %lower x
+        x2 = X(joints(2)); %higher x
+        y1 = Y(joints(1)); %lower y
+        y2 = Y(joints(2)); %higher y
+        r = sqrt((x2 - x1)^2 + (y2 - y1)^2);
+        if x1 == i %if row# == lower x
+            Ax(i, members(j)) = x2 - x1/r;
+            Ay(i, members(j)) = y2 - y1/r;
+        else
+            Ax(i, members(j)) = x1 - x2/r;
+            Ay(i, members(j)) = y1 - y2/r;
+        end 
     end
-
-    [jR, ~] = size(jointMatches);
-
-    for k = 1:jR
-        
-       if (jointMatches(k,1) == i)
-            distX = X(jointMatches(k,2)) - X(jointMatches(k,1));
-       else
-            distX = X(jointMatches(k,1)) - X(jointMatches(k,2));
-       end
-       
-       distY = Y(jointMatches(k,1)) - Y(jointMatches(k,2));
-
-       unit = distX / sqrt(distX^2 + distY^2);
-
-       if (isnan(unit))
-           unit = 0;
-       end
-       
-       unitVectors(k) = unit;
-    end
-
-    coeVec = zeros(1,Cc);
-
-    for g = 1:length(memberMatches)
-        coeVec(memberMatches(g)) = unitVectors(g);
-    end
-    
-    Ax(i,:) = coeVec;
-end
-
-for i = 1:Cr
-    memberMatches = find(C(i,:) == 1);
-
-    for j = 1:length(memberMatches)
-        jointMatches(j,:) = find(C(:,memberMatches(j)) == 1);
-    end
-
-    [jR, ~] = size(jointMatches);
-
-    for k = 1:jR
-
-       if (jointMatches(k,1) == i)
-           distY = Y(jointMatches(k,2)) - Y(jointMatches(k,1));
-       else
-           distY = Y(jointMatches(k,1)) - Y(jointMatches(k,2));
-       end
-                 
-       distX = X(jointMatches(k,2)) - X(jointMatches(k,1));
-       unit = distY / sqrt(distX^2 + distY^2);
-       
-       if (isnan(unit))
-           unit = 0;
-       end
-       
-       unitVectors(k) = unit;
-    end
-
-    coeVec = zeros(1,Cc);
-
-    for g = 1:length(memberMatches)
-        coeVec(memberMatches(g)) = unitVectors(g);
-    end
-    
-    Ay(i,:) = coeVec;
 end
 disp(Ax);
 disp(Ay);
+
+
+
+
+
