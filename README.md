@@ -1,2 +1,1 @@
-# truss_analysis
-MATLAB truss analysis code for EK301
+Truss Design Project for ENG EK301 - Engineering Mechanics
