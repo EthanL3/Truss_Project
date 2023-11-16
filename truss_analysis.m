@@ -11,7 +11,7 @@ added_to_length = false;
 
 %longest member will buckle first:
 buckling_member = 0; %member number
-buckling_member_length = 0; %member length 
+buckling_length = 0; %member length 
 %Loop for Ax matrix
 for i = 1:C_rows
     members = find(C(i,:)); %columns of C
@@ -23,8 +23,8 @@ for i = 1:C_rows
         y1 = Y(joints(1)); %lower y
         y2 = Y(joints(2)); %higher y
         r = sqrt((x2 - x1)^2 + (y2 - y1)^2);
-        if r > buckling_member_length
-            buckling_member_length = r;
+        if r > buckling_length
+            buckling_length = r;
             buckling__member = members(j);
         end
         total_length = total_length + r;
@@ -42,17 +42,18 @@ total_cost = total_cost + total_length;
 Ax_final = [Ax, Sx];
 Ay_final = [Ay, Sy];
 A = [Ax_final; Ay_final];
-T = A\L; %inv(A) * L
-disp(Ay);
+T = A\L;
+
 %Live load:
-%joint x is where load is applied
-x = find(L) - C_rows;
+x = find(L) - C_rows; %joint x is where load is applied
 x_members = find(Ay(x, :));
 y_force = 0; %Total force upwards opposing the load
 for i = 1:length(x_members)
     y_force = y_force + (Ay(x, x_members(i)) * T(x_members(i)));
 end
 max_load = y_force / 9.8; %theoretical max load
+%Buckling member:
+F = 3654.533 .* buckling_length .^(-2.119); %force of buckling
 
 disp('EK301, Section A6, Ethan L., Margaret H., Micheal M., 11/17/2023');
 disp('Load: 25 N');
@@ -71,8 +72,9 @@ fprintf('Sx2: %.2f\n', T(length(T)-1));
 fprintf('Sx3: %.2f\n', T(length(T)));
 fprintf('Total cost: %.2f\n', total_cost);
 fprintf('Theoretical max load/cost ratio in oz/$: %f\n', max_load/total_cost);
-fprintf('Buckling member number: %d\n', buckling_member);
-fprintf('Buckiling member length: %f\n', buckling_member_length);
+fprintf('Member number: %d\n', buckling_member);
+fprintf('Member length: %f\n', buckling_length);
+fprintf('Predicted buckling strength: %f\n', F);
 
 
 

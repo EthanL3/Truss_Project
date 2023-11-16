@@ -23,9 +23,10 @@ for i = 1:C_rows
         y1 = Y(joints(1)); %lower y
         y2 = Y(joints(2)); %higher y
         r = sqrt((x2 - x1)^2 + (y2 - y1)^2);
-        if r > longest_member_length
-            longest_member_length = r;
-            longest_member = members(j);
+        if r > buckling_member_length
+            buckling_member_length = r;
+            buckling__member = members(j);
+        end
         total_length = total_length + r;
         if i == min(joints)
             Ax(i, members(j)) = (x2 - x1)/r;
@@ -70,9 +71,9 @@ fprintf('Sx2: %.2f\n', T(length(T)-1));
 fprintf('Sx3: %.2f\n', T(length(T)));
 fprintf('Total cost: %.2f\n', total_cost);
 fprintf('Theoretical max load/cost ratio in oz/$: %f\n', max_load/total_cost);
-disp('Member to buckle first:')
-fprintf('Member %d\n', buckling_member);
-fprintf('Strength: %f)
+fprintf('Member number: %d\n', buckling_member);
+fprintf('Member length: %f\n', buckling_member_length);
+fprintf('Predicted buckling strength')
 
 
 
