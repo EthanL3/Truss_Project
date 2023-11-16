@@ -78,7 +78,7 @@ fprintf('Predicted buckling strength: %f\n', F);
 
 
 
-
+eee
 
 
 
