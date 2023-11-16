@@ -75,10 +75,3 @@ fprintf('Theoretical max load/cost ratio in oz/$: %f\n', max_load/total_cost);
 fprintf('Member number: %d\n', buckling_member);
 fprintf('Member length: %f\n', buckling_length);
 fprintf('Predicted buckling strength: %f\n', F);
-
-
-
-eee
-
-
-
