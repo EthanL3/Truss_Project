@@ -9,33 +9,26 @@ total_length = 0;
 total_cost = 10 * C_rows;
 added_to_length = false;
 
-%longest member will buckle first:
-buckling_member = 0; %member number
-buckling_length = 0; %member length 
+r_vec = [];
+r_index = 1;
+
 %Loop for Ax matrix
-for i = 1:C_rows
-    members = find(C(i,:)); %columns of C
-    for j = 1:numel(members)
-        joints = find(C(:, members(j))); %rows of C
-        joints = joints';
-        x1 = X(joints(1)); %lower x
-        x2 = X(joints(2)); %higher x
-        y1 = Y(joints(1)); %lower y
-        y2 = Y(joints(2)); %higher y
-        r = sqrt((x2 - x1)^2 + (y2 - y1)^2);
-        if r > buckling_length
-            buckling_length = r;
-            buckling__member = members(j);
-        end
-        total_length = total_length + r;
-        if i == min(joints)
-            Ax(i, members(j)) = (x2 - x1)/r;
-            Ay(i, members(j)) = (y2 - y1)/r;
-        else
-            Ax(i, members(j)) = (x1-x2)/r;
-            Ay(i, members(j)) = (y1 - y2)/r;
-        end
-    end
+for i = 1:C_cols
+    joints = find(C(:,i));
+    x1 = X(joints(1)); %lower x
+    x2 = X(joints(2)); %higher x
+    y1 = Y(joints(1)); %lower y
+    y2 = Y(joints(2)); %higher y
+
+    r = norm([x1,y1]-[x2,y2]);
+
+    total_length = total_length + r;
+    Ax(joints(1), i)  = (x2 - x1)/r;
+    Ax(joints(2), i) = (x1-x2)/r;
+    Ay(joints(1), i) = (y2-y1)/r;
+    Ay(joints(2), i) = (y1-y2)/r;
+
+   
 end
 total_length = total_length/2;
 total_cost = total_cost + total_length;
@@ -75,3 +68,4 @@ fprintf('Theoretical max load/cost ratio in oz/$: %f\n', max_load/total_cost);
 fprintf('Member number: %d\n', buckling_member);
 fprintf('Member length: %f\n', buckling_length);
 fprintf('Predicted buckling strength: %f\n', F);
+disp(r_vec);
