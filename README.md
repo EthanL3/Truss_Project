@@ -1,2 +1,2 @@
-Ek301 Truss design project
+Ek301 Truss design project  
 Ethan L., Michael M., Margaret H.
