@@ -1,5 +1,4 @@
-load('PracticeProblemInput.mat'); 
-
+load('truss1.mat');
 [c_rows, c_cols] = size(C);
 
 Ax = zeros(c_rows, c_cols); 
@@ -14,6 +13,7 @@ w_l = L(find(L)); %Value of load
 %Indexing columns of C matrix
 for i = 1:c_cols
     joints = find(C(:,i));
+    joints = joints';
     x1 = X(joints(1)); %lower x
     x2 = X(joints(2)); %higher x
     y1 = Y(joints(1)); %lower y
@@ -49,8 +49,10 @@ end
 
 
 %Critical member info:
-crit_load = min(abs(w_failure));
-crit_member = find(abs(w_failure) == crit_load);
+compressions = w_failure > 0;
+buckling_strengths = w_failure(compressions);
+crit_load = min(buckling_strengths);
+crit_member = find(w_failure == crit_load);
 crit_length = r_vec(crit_member);
 
 
@@ -68,8 +70,8 @@ for i = 1:length(T) - 3
 end
 disp('Reaction forces in oz:');
 fprintf('Sx1: %.2f\n', T(length(T)-2));
-fprintf('Sx2: %.2f\n', T(length(T)-1));
-fprintf('Sx3: %.2f\n', T(length(T)));
+fprintf('Sy1: %.2f\n', T(length(T)-1));
+fprintf('Sy2: %.2f\n', T(length(T)));
 fprintf('Total cost: %.2f\n', total_cost);
 fprintf('Theoretical max load/cost ratio in oz/$: %.2f\n', crit_load/total_cost);
 fprintf('Critical member: %d\n', crit_member);
