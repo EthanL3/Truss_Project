@@ -36,19 +36,15 @@ T = A\L;
 T = T';
 
 %Live load
-p_crit = ones(1, c_cols);
+p_crit = zeros(1, c_cols);
 r_m = ones(1, c_cols);
-w_failure = ones(1, c_cols);
+w_failure = zeros(1, c_cols);
 for i = 1:c_cols
     if T(i) ~= 0
         r_m(i) = T(i)/w_l;
     end
     p_crit(i) = 3654.533 * (r_vec(i)^(-2.119));
     w_failure(i) = (-1*p_crit(i))/r_m(i);
-    if(abs(w_failure(i)) > 1000)
-        w_failure(i) = 100;
-    end
-    disp(w_failure(i));
 end
 
 
@@ -78,4 +74,4 @@ fprintf('Total cost: %.2f\n', total_cost);
 fprintf('Theoretical max load/cost ratio in oz/$: %.2f\n', crit_load/total_cost);
 fprintf('Critical member: %d\n', crit_member);
 fprintf('Critical member length: %.2f\n', crit_length);
-fprintf('Theoretical maximum load (oz): %.2f\n', crit_load);
+fprintf('Theoretical maximum load possible (oz): %.2f\n', crit_load);
