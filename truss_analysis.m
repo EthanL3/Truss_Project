@@ -1,4 +1,4 @@
-load('truss1.mat');
+load('truss2.mat');
 [c_rows, c_cols] = size(C);
 
 Ax = zeros(c_rows, c_cols); 
@@ -40,11 +40,13 @@ p_crit = zeros(1, c_cols);
 r_m = ones(1, c_cols);
 w_failure = zeros(1, c_cols);
 for i = 1:c_cols
+    p_crit(i) = 3654.533 * (r_vec(i)^(-2.119));
     if T(i) ~= 0
         r_m(i) = T(i)/w_l;
+        w_failure(i) = (-1*p_crit(i))/r_m(i);
+    else
+        w_failure(i) = NaN; %if zero-force member, then w_failure is set to NaN
     end
-    p_crit(i) = 3654.533 * (r_vec(i)^(-2.119));
-    w_failure(i) = (-1*p_crit(i))/r_m(i);
 end
 
 
