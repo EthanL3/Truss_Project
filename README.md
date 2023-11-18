@@ -1,1 +1,3 @@
-Truss Design Project for ENG EK301 - Engineering Mechanics
+Ek301 Truss design project  
+Ethan L., Michael M., Margaret H.  
+truss_analysis.m was used to analyze designs  
