@@ -1,4 +1,4 @@
-load('truss2.mat');
+load('truss1.mat');
 [c_rows, c_cols] = size(C);
 
 Ax = zeros(c_rows, c_cols); 
@@ -70,6 +70,7 @@ for i = 1:length(T) - 3
         fprintf('m%d: 0.00\n', i);
     end
 end
+disp(r_vec)
 disp('Reaction forces in oz:');
 fprintf('Sx1: %.2f\n', T(length(T)-2));
 fprintf('Sy1: %.2f\n', T(length(T)-1));
